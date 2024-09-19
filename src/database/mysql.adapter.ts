@@ -11,7 +11,7 @@ export class MySQLAdapter implements IDatabaseConnection {
             this.createConnection = createConnection;
             this.ConnectionType = Connection;
         } catch (e) {
-            throw new Error('Please run `npm install sqlite3` to use SQLiteAdapter');
+            throw new Error('Please run `npm install mysql2/promise` to use MySQLAdapter');
         }
     }
 
