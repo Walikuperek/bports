@@ -45,7 +45,7 @@ axiosHttp.get('/endpoint')
 
 - **Native Node.js HTTP Client**:
     ```typescript
-    'native'
+    'node'
     ```
 
 ## API

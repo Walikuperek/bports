@@ -47,7 +47,7 @@ class App {
     }
 }
 
-const app = new App(createLogger({ type: 'file', logFileName: 'app.log' }));
+const app = new App(createLogger('file', { logFileName: 'app.log' }));
 app.run();
 ```
 
