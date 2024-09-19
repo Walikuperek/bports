@@ -13,9 +13,9 @@
 ```typescript copy
 import { createHttp, createLogger, ILogger, IHttp } from '@quak.lib/bports'
 
-const logger: ILogger = createLogger({type: 'console'})
+const logger: ILogger = createLogger({type: 'file', logName: 'app.log'}) // go for 'gcp' | 'file' | 'console'
 logger.log('Regular log')
-logger.info('Info log')
+logger.error('Error log')
 
 // Error: Please run `npm install axios` to use AxiosHttpClientAdapter
 const http: IHttp = createHttp({type: 'axios', baseUrl: 'localhost:3000/api'})
@@ -38,7 +38,9 @@ app.run();
 
 ## Description
 
-**`bports`** is a modular library that provides ports (interfaces) and adapters for commonly used services like logging and HTTP handling, allowing users to swap implementations easily without changing the application code. The main goal is to keep the API stable, preventing breaking changes while offering flexibility in choosing dependencies.
+**`bports`** is a modular backend library that provides ports (interfaces) and adapters for commonly used services like logging, HTTP handling, etc. - allowing users to swap implementations easily without changing the application code.
+
+The main goal is to `keep the API stable`, `preventing breaking changes` while offering flexibility in choosing dependencies.
 
 ## Features
 
@@ -54,6 +56,13 @@ app.run();
 
 ## Installation
 
+Prerequisites:
+- NodeJS (v18+) installed on your machine
+  ```bash
+  $ node -v  # check version 
+    v20.14.0 # should be v18+
+  ```
+
 Install the core library:
 ```bash
 npm install @quak.lib/bports # Not yet published
@@ -65,6 +74,8 @@ import { createLogger, ILogger } from '@quak.lib/bports'
 
 // Error: Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter
 const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
+
+// After @google-cloud/logging installation
 gcpLogger.info('First log on GCP')
 ```
 
