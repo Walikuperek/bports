@@ -14,16 +14,16 @@ This project provides an abstract `IHttp` interface and a factory function for c
     - [`put<T>(url: string, data: any, headers?: Record<string, string>): Promise<T>`](#putturl-string-data-any-headers-recordstring-string-promiset)
     - [`delete<T>(url: string, headers?: Record<string, string>): Promise<T>`](#deleteturl-string-headers-recordstring-string-promiset)
   - [Contributing](#contributing)
+  - [Back to main page](#back-to-main-page)
 
 ## Usage
 
 Use the `createHttp` factory function to create an HTTP client based on a configuration object. Each configuration type corresponds to a specific HTTP client implementation.
 
 ```typescript
-import { createHttp, HttpClientConfig } from './http.factory';
+import { createHttp } from './http.factory';
 
-const config: HttpClientConfig = { type: 'axios', baseUrl: 'https://api.example.com' };
-const http = createHttp(config);
+const http = createHttp({ type: 'axios', baseUrl: 'https://api.example.com' });
 
 http.get('/endpoint')
     .then(response => console.log(response))
@@ -87,6 +87,6 @@ Each method allows for making asynchronous HTTP requests, handling both the resp
 
 Contributions and feedback are welcome! Feel free to submit issues or pull requests.
 
---- 
+## Back to main page
 
-This `README.md` provides a brief but informative guide on how to use the `IHttp` interface and factory in your project.
+Go back to the [main page](/README.md)
