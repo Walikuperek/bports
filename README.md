@@ -1,5 +1,14 @@
 # bports [WIP]
 
+<p align="center">
+  <img src="https://quak.com.pl/assets/logo/bports_logo.png" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/license/walikuperek/qtheme" />
+  <img src="https://img.shields.io/badge/Tests-%E2%9C%85-success" />
+</p>
+
 *Quick example:*
 ```typescript copy
 import { createHttp, createLogger, ILogger, IHttp } from '@quak.lib/bports'
@@ -11,6 +20,20 @@ logger.info('Info log')
 // Error: Please run `npm install axios` to use AxiosHttpClientAdapter
 const http: IHttp = createHttp({type: 'axios', baseUrl: 'localhost:3000/api'})
 const users = await http.get('/users')
+```
+
+*Dependency Injection example:*
+```typescript
+class App {
+    constructor(private logger: ILogger) {}
+
+    run() {
+        this.logger.log('App is running');
+    }
+}
+
+const app = new App(createLogger({ type: 'file', logFileName: 'app.log' }));
+app.run();
 ```
 
 ## Description
@@ -42,6 +65,7 @@ import { createLogger, ILogger } from '@quak.lib/bports'
 
 // Error: Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter
 const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
+gcpLogger.info('First log on GCP')
 ```
 
 ## Supported Ports

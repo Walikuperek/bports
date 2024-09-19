@@ -30,6 +30,32 @@ http.get('/endpoint')
     .catch(error => console.error(error));
 ```
 
+### Dependency Injection Example
+
+Port can be injected into any part of your application.
+
+```typescript
+class App {
+    user = null
+  
+    constructor(private http: IHttp, private logger: ILogger) {
+        this.fetchUser()
+            .then(user => this.user = user)
+            .catch(e => this.logger.error(e))
+    }
+
+    async fetchUser() {
+        return this.http.get('localhost:3000/api/user') 
+    }
+}
+
+const app = new App(
+    createHttp({ type: 'axios' }),
+    createLogger({ type: 'file', logFileName: 'app.log' })
+);
+app.run();
+```
+
 ## HTTP Client Types
 
 - **Axios HTTP Client**: Uses the popular `axios` library for making HTTP requests. (`type: 'axios'`, optional `baseUrl`).
