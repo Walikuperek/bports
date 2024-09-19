@@ -1,0 +1,31 @@
+{
+  "name": "bports",
+  "version": "1.0.0",
+  "description": "Basic Ports library with flexible adapters",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./http": "./dist/http/index.js",
+    "./logger": "./dist/logger/index.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "axios": "^1.7.7",
+    "@google-cloud/logging": "^9.7.0"
+  },
+  "optionalDependencies": {
+    "axios": "^1.7.7",
+    "@google-cloud/logging": "^9.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  },
+  "keywords": ["ports", "adapters", "logger", "http"],
+  "author": "QUAK Kacper Walczak",
+  "license": "MIT"
+}
