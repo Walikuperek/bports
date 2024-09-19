@@ -22,10 +22,9 @@ This project provides an abstract `ILogger` interface and a factory function to 
 Use the `createLogger` factory function to instantiate a logger based on a configuration object. Each configuration type corresponds to a specific logger implementation.
 
 ```typescript
-import { createLogger, LoggerConfig } from './logger.factory';
+import { createLogger } from './logger.factory';
 
-const config: LoggerConfig = { type: 'console' };
-const logger = createLogger(config);
+const logger = createLogger({ type: 'console' });
 
 logger.info('This is an info message');
 ```
