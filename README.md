@@ -1,4 +1,4 @@
-# bports
+# bports [WIP]
 
 *Quick example:*
 ```typescript copy
@@ -8,7 +8,7 @@ const logger: ILogger = createLogger({type: 'console'})
 logger.log('Regular log')
 logger.info('Info log')
 
-// throws Error if not installed deps; 'Please run `npm install axios` to use AxiosHttpClientAdapter'
+// Error: Please run `npm install axios` to use AxiosHttpClientAdapter
 const http: IHttp = createHttp({type: 'axios', baseUrl: 'localhost:3000/api'})
 const users = await http.get('/users')
 ```
@@ -32,20 +32,21 @@ const users = await http.get('/users')
 ## Installation
 
 Install the core library:
-
 ```bash
-npm install bports
+npm install @quak.lib/bports # Not yet published
 ```
 
-Then install any adapter you want to use. For example, to use the GCP Logger adapter:
+Then use any adapter. For example, to use the GCP Logger adapter:
+```typescript
+import { createLogger, ILogger } from '@quak.lib/bports'
 
-```bash
-npm install @google-cloud/logging
+// Error: Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter
+const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
 ```
 
 ## Supported Ports
-- IHttp - Interface for handling HTTP requests.
-- ILogger - Interface for logging information.
+- [IHttp](/src/http/README.md) - Interface for handling HTTP requests.
+- [ILogger](/src/logger/README.md) - Interface for logging information.
 
 ### Unprepared
 > 🚧 Under construction, building modules and preparation to publish on NPM.
@@ -65,19 +66,19 @@ npm install @google-cloud/logging
 
 ## Dependency Configuration
 
-For adapters that require additional libraries (like `winston` for file logging or `@google-cloud/logging` for GCP logging), the dependencies are optional peer dependencies. This means you can install them only if you're using the respective adapter.
+For adapters that require additional libraries (like `@google-cloud/logging` for GCP logging), the dependencies are optional peer dependencies. This means you can install them only if you're using the respective adapter.
 
 ### Steps for Setting Up Peer Dependencies
 
 1. **Install the core `bports` library:**
   - Install library
     ```bash
-    npm install bports
+    npm install @quak.lib/bports
     ```
 
 2. **Install the desired adapter's peer dependencies:**
   - For GCP Logger:
-    > Will yell at you with an error if not installed: 'Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter'
+    > Error: 'Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter'
     ```bash
     npm install @google-cloud/logging
     ```
@@ -86,28 +87,20 @@ For adapters that require additional libraries (like `winston` for file logging 
   - Use the appropriate adapter based on your setup, as shown in the usage examples.
 
     ```typescript copy
-    import { createLogger, ILogger } from 'bports'
+    import { createLogger, ILogger } from '@quak.lib/bports'
 
-    const logger = createLogger({type: 'console'})
+    const logger: ILogger = createLogger({type: 'console'})
     logger.log('Regular log')
     logger.info('Info log')
 
-    const gcpLogger = createLogger({type: 'gcp', logName: 'logs-name'})
-    gcpLogger.warn('Info log on GCP') // uses your credentials
+    const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
+    gcpLogger.warn('Warn log on GCP') // uses your credentials
     ```
-
----
 
 ## Contributing
 
 Feel free to open issues or submit pull requests to help improve the `bports` library. Any feedback and contributions are welcome!
 
----
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-By following these steps, users can flexibly choose which adapters to use and only install the necessary dependencies, keeping their applications lightweight and modular.
