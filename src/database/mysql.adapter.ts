@@ -26,7 +26,7 @@ export class MySQLAdapter implements IDatabaseConnection {
     }
 
     async add(table: string, data: any): Promise<any> {
-        const [result] = await this.connection!.execute(`INSERT INTO \`${table}\` SET ?`, [data]);
+        const [result] = await this.connection!.execute(`INSERT INTO ${table} SET (?)`, [data]);
         return result;
     }
 
@@ -34,7 +34,7 @@ export class MySQLAdapter implements IDatabaseConnection {
         const keys = Object.keys(data[0]);
         const values = data.map(obj => keys.map(key => obj[key]));
         const placeholders = data.map(() => `(${keys.map(() => '?').join(',')})`).join(',');
-        const sql = `INSERT INTO \`${table}\` (${keys.join(',')}) VALUES ${placeholders}`;
+        const sql = `INSERT INTO ${table} (${keys.join(',')}) VALUES ${placeholders}`;
         const [result] = await this.connection!.execute(sql, values.flat());
         return result;
     }
@@ -44,7 +44,7 @@ export class MySQLAdapter implements IDatabaseConnection {
     }
 
     async updateMany(table: string, criteria: any, data: any): Promise<void> {
-        const whereClauses = Object.keys(criteria).map(key => `\`${key}\` = ?`).join(' AND ');
+        const whereClauses = Object.keys(criteria).map(key => `${key} = ?`).join(' AND ');
         const values = Object.values(criteria);
         await this.connection!.execute(`UPDATE \`${table}\` SET ? WHERE ${whereClauses}`, [data, ...values]);
     }
