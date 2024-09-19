@@ -23,37 +23,12 @@ Use the `createHttp` factory function to create an HTTP client based on a config
 ```typescript
 import { createHttp } from './http.factory';
 
-const http = createHttp({ type: 'axios', baseUrl: 'https://api.example.com' });
+const axiosHttp = createHttp('axios', { baseUrl: 'https://api.example.com' }); // you can omit config
+const http = createHttp('node') // you can use native node http
 
-http.get('/endpoint')
+axiosHttp.get('/endpoint')
     .then(response => console.log(response))
     .catch(error => console.error(error));
-```
-
-### Dependency Injection Example
-
-Port can be injected into any part of your application.
-
-```typescript
-class App {
-    user = null
-  
-    constructor(private http: IHttp, private logger: ILogger) {
-        this.fetchUser()
-            .then(user => this.user = user)
-            .catch(e => this.logger.error(e))
-    }
-
-    async fetchUser() {
-        return this.http.get('localhost:3000/api/user') 
-    }
-}
-
-const app = new App(
-    createHttp({ type: 'axios' }), // you can pass baseUrl here
-    createLogger({ type: 'file', logFileName: 'app.log' })
-);
-app.run();
 ```
 
 ## HTTP Client Types
@@ -65,12 +40,12 @@ app.run();
 
 - **Axios HTTP Client**:
     ```typescript
-    { type: 'axios', baseUrl: 'https://api.example.com' }
+    'axios', { baseUrl?: 'https://api.example.com/api' }
     ```
 
 - **Native Node.js HTTP Client**:
     ```typescript
-    { type: 'native' }
+    'native'
     ```
 
 ## API

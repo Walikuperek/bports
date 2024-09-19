@@ -24,9 +24,14 @@ Use the `createLogger` factory function to instantiate a logger based on a confi
 ```typescript
 import { createLogger } from './logger.factory';
 
-const logger = createLogger({ type: 'console' });
+const logger = createLogger('console');
+const fileLogger = createLogger('file', { logFileName: 'app.log' });
+const googleCloudLogger = createLogger('gcp', { logName: 'app-logs' }); // uses your creds
 
-logger.info('This is an info message');
+logger.log('Info log in console');
+logger.info('Info log in console');
+fileLogger.warn('Warn log appended to file');
+googleCloudLogger.error('Error log showed inside GCP logging');
 ```
 
 ### Dependency Injection Example
@@ -48,7 +53,7 @@ app.run();
 
 ## Logger Types
 
-- **Console Logger**: Outputs logs to the console (`type: 'console'` or `type: 'native'`).
+- **Console Logger**: Outputs logs to the console (`type: 'console'`).
 - **File Logger**: Saves logs to a file (`type: 'file'`, requires `logFileName`).
 - **GCP Logger**: Sends logs to Google Cloud Platform (`type: 'gcp'`, requires `logName`).
 
@@ -56,17 +61,17 @@ app.run();
 
 - **Console Logger**:
     ```typescript
-    { type: 'console' }
+    'console'
     ```
 
 - **File Logger**:
     ```typescript
-    { type: 'file', logFileName: 'app.log' }
+    'file', { logFileName: 'app.log' }
     ```
 
 - **GCP Logger**:
     ```typescript
-    { type: 'gcp', logName: 'gcp-log-name' }
+    'gcp', { logName: 'gcp-log-name' }
     ```
 
 ## API

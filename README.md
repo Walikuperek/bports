@@ -6,43 +6,51 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/license/walikuperek/qtheme" />
-  <img src="https://img.shields.io/badge/Tests-%E2%9C%85-success" />
+  <img src="https://img.shields.io/badge/tests-%E2%9C%85-success" />
 </p>
 
 *Quick example:*
 ```typescript copy
-import { createHttp, createLogger, ILogger, IHttp } from '@quak.lib/bports'
-
-const logger: ILogger = createLogger({type: 'file', logFileName: 'app.log'}) // go for 'gcp' | 'file' | 'console'
-logger.log('Regular log')
-logger.error('Error log')
+import { createDatabase, createHttp, createLogger, ILogger, IHttp, IDatabaseConnection } from '@quak.lib/bports'
 
 // Error: Please run `npm install axios` to use AxiosHttpClientAdapter
-const http: IHttp = createHttp({type: 'axios', baseUrl: 'localhost:3000/api'})
+const http: IHttp = createHttp('axios', { baseUrl: 'https://example.com/api'})
 const users = await http.get('/users')
+
+const mysqlDB = createDatabase('mysql', {
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'example'
+});
+const firestoreDB = createDatabase('firestore')
+const sqliteDB = createDatabase('sqlite', { filepath: './database.sqlite' })
+await mysqlDB.add('users', { name: 'John Doe', age: 30 });
 ```
 
 *Dependency Injection example:*
+
 ```typescript
 class App {
-    user = null
-  
-    constructor(private http: IHttp, private logger: ILogger) {
-        this.fetchUser()
-            .then(user => this.user = user)
-            .catch(e => this.logger.error(e))
-    }
+    constructor(private logger: ILogger, private db: IDatabaseConnection) {}
 
-    async fetchUser() {
-        return this.http.get('/user') 
+    async run(port: number) {
+        await this.db.connect()
+        await this.db.add('users', { username: 'admin', pass: 'password' })
+        this.logger.info(`App is serving at port ${port}`)
+    }
+    
+    async disconnect() {
+        await this.db.disconnect()
     }
 }
 
+// Use your app
 const app = new App(
-    createHttp({ type: 'axios', baseUrl: 'localhost:3000/api' }), // you can omit baseUrl
-    createLogger({ type: 'gcp', logName: 'app-logs' })
-);
-app.run();
+    createLogger('console'),
+    createDatabase('sqlite', { filepath: './database.sqlite' })
+)
+await app.run(3000)
 ```
 
 ## Description
@@ -50,6 +58,8 @@ app.run();
 **`bports`** is a modular backend library that provides ports (interfaces) and adapters for commonly used services like logging, HTTP handling, etc. - allowing users to swap implementations easily without changing the application code.
 
 The main goal is to `keep the API stable`, `preventing breaking changes` while offering flexibility in choosing dependencies.
+
+> Wait with usage till modules finished and API stabilization after tests.
 
 ## Features
 
@@ -82,7 +92,7 @@ Then use any adapter. For example, to use the GCP Logger adapter:
 import { createLogger, ILogger } from '@quak.lib/bports'
 
 // Error: Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter
-const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
+const gcpLogger: ILogger = createLogger('gcp', { logName: 'logs-name'})
 
 // After @google-cloud/logging installation
 gcpLogger.info('First log on GCP')
@@ -91,10 +101,10 @@ gcpLogger.info('First log on GCP')
 ## Supported Ports
 - [IHttp](/src/http/README.md) - Interface for handling HTTP requests.
 - [ILogger](/src/logger/README.md) - Interface for logging information.
+- [IDatabaseConnection](/src/database/README.md) - Interface for database connections.
 
 ### Unprepared
 > 🚧 Under construction, building modules and preparation to publish on NPM.
-- IDatabaseConnection - Interface for database connections.
 - IEventBus - Interface for handling events and communication between components.
 - ICache - Interface for handling cache.
 - IAuthService - Interface for handling authorization and authentication.
@@ -137,7 +147,7 @@ For adapters that require additional libraries (like `@google-cloud/logging` for
     ```typescript copy
     import { createLogger, ILogger } from '@quak.lib/bports'
 
-    const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
+    const gcpLogger: ILogger = createLogger('gcp', { logName: 'logs-name'})
     gcpLogger.warn('Warn log on GCP') // uses your credentials
     ```
 

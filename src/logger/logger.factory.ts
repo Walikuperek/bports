@@ -3,33 +3,26 @@ import { ConsoleLoggerAdapter } from './native.adapter';
 import { FileLoggerAdapter } from './file.adapter';
 import { GCPLoggerAdapter } from './gcp.adapter';
 
-export interface GCPLoggerConfig {
-    type: 'gcp';
-    logName: string;
-}
-export interface NativeLoggerConfig {
-    type: 'native' | 'console';
-}
+export interface ConsoleLoggerConfig {}
 export interface FileLoggerConfig {
-    type: 'file';
     logFileName: string;
 }
+export interface GCPLoggerConfig {
+    logName: string;
+}
 
-export type LoggerConfig =
-    | GCPLoggerConfig
-    | NativeLoggerConfig
-    | FileLoggerConfig;
 
-export function createLogger(config: LoggerConfig): ILogger {
-    switch (config.type) {
-        case 'gcp':
-            return new GCPLoggerAdapter(config.logName);
+export function createLogger(type: 'console', config?: ConsoleLoggerConfig): ILogger;
+export function createLogger(type: 'file', config: FileLoggerConfig): ILogger;
+export function createLogger(type: 'gcp', config: GCPLoggerConfig): ILogger;
+export function createLogger(type: string, config?: any): ILogger {
+    switch (type) {
         case 'console':
-            return new ConsoleLoggerAdapter();
-        case 'native':
             return new ConsoleLoggerAdapter();
         case 'file':
             return new FileLoggerAdapter(config.logFileName);
+        case 'gcp':
+            return new GCPLoggerAdapter(config.logName);
         default:
             throw new Error('Unsupported logger type');
     }
