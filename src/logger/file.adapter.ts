@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class FileLoggerAdapter implements ILogger {
-    private filePath: string;
+    private readonly filePath: string;
 
     constructor(logFileName: string) {
         this.filePath = path.resolve(__dirname, logFileName);

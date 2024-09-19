@@ -1,9 +1,9 @@
 import { ILogger } from './logger.port';
 
 export class GCPLoggerAdapter implements ILogger {
-    private logName: string;
-    private Logging: any;
-    private loggingClient: any;
+    private readonly logName: string;
+    private readonly Logging: any;
+    private readonly loggingClient: any;
 
     constructor(logName: string) {
         this.logName = logName;

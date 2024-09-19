@@ -13,7 +13,7 @@
 ```typescript copy
 import { createHttp, createLogger, ILogger, IHttp } from '@quak.lib/bports'
 
-const logger: ILogger = createLogger({type: 'file', logName: 'app.log'}) // go for 'gcp' | 'file' | 'console'
+const logger: ILogger = createLogger({type: 'file', logFileName: 'app.log'}) // go for 'gcp' | 'file' | 'console'
 logger.log('Regular log')
 logger.error('Error log')
 
@@ -25,14 +25,23 @@ const users = await http.get('/users')
 *Dependency Injection example:*
 ```typescript
 class App {
-    constructor(private logger: ILogger) {}
+    user = null
+  
+    constructor(private http: IHttp, private logger: ILogger) {
+        this.fetchUser()
+            .then(user => this.user = user)
+            .catch(e => this.logger.error(e))
+    }
 
-    run() {
-        this.logger.log('App is running');
+    async fetchUser() {
+        return this.http.get('/user') 
     }
 }
 
-const app = new App(createLogger({ type: 'file', logFileName: 'app.log' }));
+const app = new App(
+    createHttp({ type: 'axios', baseUrl: 'localhost:3000/api' }), // you can omit baseUrl
+    createLogger({ type: 'gcp', logName: 'app-logs' })
+);
 app.run();
 ```
 
@@ -113,20 +122,20 @@ For adapters that require additional libraries (like `@google-cloud/logging` for
 
 2. **Install the desired adapter's peer dependencies:**
   - For GCP Logger:
+    > Throws if not installed deps: 
+    >
     > Error: 'Please run `npm install @google-cloud/logging` to use GCPLoggerAdapter'
+    
+    Then install dependencies for adapter:
     ```bash
     npm install @google-cloud/logging
     ```
 
 3. **Configure the adapter in your project:**
-  - Use the appropriate adapter based on your setup, as shown in the usage examples.
+  - Use the appropriate adapter based on your setup, as shown in the usage example:
 
     ```typescript copy
     import { createLogger, ILogger } from '@quak.lib/bports'
-
-    const logger: ILogger = createLogger({type: 'console'})
-    logger.log('Regular log')
-    logger.info('Info log')
 
     const gcpLogger: ILogger = createLogger({type: 'gcp', logName: 'logs-name'})
     gcpLogger.warn('Warn log on GCP') // uses your credentials

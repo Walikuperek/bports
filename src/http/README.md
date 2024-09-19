@@ -50,7 +50,7 @@ class App {
 }
 
 const app = new App(
-    createHttp({ type: 'axios' }),
+    createHttp({ type: 'axios' }), // you can pass baseUrl here
     createLogger({ type: 'file', logFileName: 'app.log' })
 );
 app.run();
