@@ -40,17 +40,17 @@ export class MySQLAdapter implements IDatabaseConnection {
     }
 
     async update(table: string, id: string, data: any): Promise<void> {
-        await this.connection!.execute(`UPDATE \`${table}\` SET ? WHERE id = ?`, [data, id]);
+        await this.connection!.execute(`UPDATE ${table} SET ? WHERE id = ?`, [data, id]);
     }
 
     async updateMany(table: string, criteria: any, data: any): Promise<void> {
         const whereClauses = Object.keys(criteria).map(key => `${key} = ?`).join(' AND ');
         const values = Object.values(criteria);
-        await this.connection!.execute(`UPDATE \`${table}\` SET ? WHERE ${whereClauses}`, [data, ...values]);
+        await this.connection!.execute(`UPDATE ${table} SET ? WHERE ${whereClauses}`, [data, ...values]);
     }
 
     async delete(table: string, id: string): Promise<void> {
-        await this.connection!.execute(`DELETE FROM \`${table}\` WHERE id = ?`, [id]);
+        await this.connection!.execute(`DELETE FROM ${table} WHERE id = ?`, [id]);
     }
 
     async transaction(fn: (tx: typeof this.ConnectionType) => Promise<void>): Promise<void> {

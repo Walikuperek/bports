@@ -1,6 +1,6 @@
 # Database Connection
 
-> Looks complete, but it's not. Requires some more work. 1. I'm moving to `sql-database` and `document-database` etc. Right now we would struggle with types.
+> Looks complete, but it's not. Requires some more work.
 
 This project provides an abstract `IDatabaseConnection` interface and adapters for connecting to different databases, such as MySQL and Firestore. The goal is to provide a unified interface for database operations, making it easier to switch between different databases without changing the application code.
 

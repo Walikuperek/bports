@@ -9,10 +9,25 @@
   <img src="https://img.shields.io/badge/tests-%E2%9C%85-success" />
 </p>
 
-*Quick example:*
+*Import:*
 ```typescript copy
-import { createDatabase, createHttp, createLogger, ILogger, IHttp, IDatabaseConnection } from '@quak.lib/bports'
+import {
+    Money, Currency, // ...models
 
+    createLogger, ILogger // ...factories, ports
+} from '@quak.lib/bports'
+```
+*Models:*
+```typescript copy
+const plnPrice = 100.00
+const price100pln = new Money(plnPrice, 'PLN')
+const amount = price100pln.value // bigint 10_000
+const label = price100pln.toString() // 100.00 PLN
+price100pln.equals(new Money(100.00, 'PLN')) // true
+const pln200 = price100pln.add(new Money(100.00, 'PLN')) // should be same currency
+```
+*Ports:*
+```typescript copy
 // Error: Please run `npm install axios` to use AxiosHttpClientAdapter
 const http: IHttp = createHttp('axios', { baseUrl: 'https://example.com/api'})
 const users = await http.get('/users')
@@ -98,8 +113,17 @@ const gcpLogger: ILogger = createLogger('gcp', { logName: 'logs-name'})
 gcpLogger.info('First log on GCP')
 ```
 
-## Supported Ports
-- [IHttp](/src/http/README.md) - Interface for handling HTTP requests.
+## Modules
+
+### Exceptions
+- [Base Errors](/src/base-errors/README.md) - Your Errors base.
+
+### Models
+- [Money](/src/money/README.md) - Money management.
+- [CQRS](/src/cqrs/README.md) - Everything what you need for CQRS.
+
+### Supported Ports
+- [IHttp](/src/http/README.md) - Interface for fetching HTTP.
 - [ILogger](/src/logger/README.md) - Interface for logging information.
 - [IDatabaseConnection](/src/database/README.md) - Interface for database connections.
 

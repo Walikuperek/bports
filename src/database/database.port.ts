@@ -1,17 +1,3 @@
-export interface IDatabaseConnection {
-    connect(): Promise<void>;
-    disconnect(): Promise<void>;
-    add(collection: string, data: any): Promise<any>;
-    addMany(collection: string, data: any[]): Promise<any[]>;
-    update(collection: string, id: string, data: any): Promise<void>;
-    updateMany(collection: string, criteria: any, data: any): Promise<void>;
-    delete(collection: string, id: string): Promise<void>;
-    transaction(fn: (tx: any) => Promise<void>): Promise<void>;
-}
-
-/*
-IDEAS to change this piece of **** to something useful
-
 export interface IDatabaseConnection<T> {
   connect(): Promise<void>;
   disconnect(): Promise<void>;
@@ -71,40 +57,39 @@ export interface IDatabaseBatch<T> {
 }
 
 // usage
-const mysqlConnection: IMySQLDatabaseConnection<User> = new MySQLAdapter<User>();
-
-// CRUD operation
-await mysqlConnection.add({ id: '1', name: 'Alice' });
-await mysqlConnection.getAll(1, 10); // paginacja
-
-// Transaction
-await mysqlConnection.transaction(async (trx) => {
-  await trx.add({ id: '2', name: 'Bob' });
-  await trx.update('1', { name: 'Alice Updated' });
-});
-
-const firestoreConnection: INoSQLDatabaseConnection<User> = new FirestoreAdapter<User>();
-
-// Nested collection
-const userOrders = firestoreConnection.getNestedCollection('users/1/orders');
-await userOrders.add({ id: 'order1', product: 'Laptop' });
-
-// Batch operation
-const batch = firestoreConnection.batch();
-batch.add({ id: '2', name: 'Charlie' });
-batch.update('1', { name: 'Alice Updated' });
-await batch.commit();
-
-
-const neo4jConnection: IGraphDatabaseConnection<NodeData> = new Neo4jAdapter<NodeData>();
-
-// Nested node
-const friendsNode = neo4jConnection.getNestedNode('user1').getNestedNode('friends');
-await friendsNode.add({ id: 'friend1', name: 'John' });
-
-// Transaction
-await neo4jConnection.transaction(async (trx) => {
-  await trx.add({ id: 'node2', label: 'Person', properties: { name: 'Dave' } });
-  await trx.update('node1', { properties: { name: 'Alice Updated' } });
-});
-*/
+// const mysqlConnection: IMySQLDatabaseConnection<User> = new MySQLAdapter<User>();
+//
+// // CRUD operation
+// await mysqlConnection.add({ id: '1', name: 'Alice' });
+// await mysqlConnection.getAll(1, 10); // paginacja
+//
+// // Transaction
+// await mysqlConnection.transaction(async (trx) => {
+//   await trx.add({ id: '2', name: 'Bob' });
+//   await trx.update('1', { name: 'Alice Updated' });
+// });
+//
+// const firestoreConnection: INoSQLDatabaseConnection<User> = new FirestoreAdapter<User>();
+//
+// // Nested collection
+// const userOrders = firestoreConnection.getNestedCollection('users/1/orders');
+// await userOrders.add({ id: 'order1', product: 'Laptop' });
+//
+// // Batch operation
+// const batch = firestoreConnection.batch();
+// batch.add({ id: '2', name: 'Charlie' });
+// batch.update('1', { name: 'Alice Updated' });
+// await batch.commit();
+//
+//
+// const neo4jConnection: IGraphDatabaseConnection<NodeData> = new Neo4jAdapter<NodeData>();
+//
+// // Nested node
+// const friendsNode = neo4jConnection.getNestedNode('user1').getNestedNode('friends');
+// await friendsNode.add({ id: 'friend1', name: 'John' });
+//
+// // Transaction
+// await neo4jConnection.transaction(async (trx) => {
+//   await trx.add({ id: 'node2', label: 'Person', properties: { name: 'Dave' } });
+//   await trx.update('node1', { properties: { name: 'Alice Updated' } });
+// });

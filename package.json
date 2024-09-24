@@ -5,8 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./base-errors": "./dist/base-errors/index.js",
+    "./cqrs": "./dist/cqrs/index.js",
+    "./database": "./dist/database/index.js",
     "./http": "./dist/http/index.js",
-    "./logger": "./dist/logger/index.js"
+    "./logger": "./dist/logger/index.js",
+    "./money": "./dist/money/index.js"
   },
   "scripts": {
     "build": "tsc"
